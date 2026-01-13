@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SoulArenasAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b3ab38b08082316f2327778bb8c43f382beec09")]
 [assembly: System.Reflection.AssemblyProductAttribute("SoulArenasAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SoulArenasAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
