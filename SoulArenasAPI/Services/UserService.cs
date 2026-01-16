@@ -19,7 +19,7 @@ namespace SoulArenasAPI.Services
             {
                 Email = userCreateRequest.Email,
                 Username = UsernameGenerator.GenerateUsername(),
-                PasswordHash = userCreateRequest.Password, // FIXME: Hash the password properly
+                PasswordHash = await CryptoHelper.HashPasswordAsync(userCreateRequest.Password),
                 CreatedAt = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow,
                 IsActive = true,
