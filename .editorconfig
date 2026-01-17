@@ -1,0 +1,17 @@
+root = true
+
+[*.{cs,vb}]
+# Indentation and spacing
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+
+# New line preferences
+dotnet_analyzer_diagnostic.category-Style.severity = info
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+
+# Organize usings
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_usings_first = true

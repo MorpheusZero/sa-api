@@ -4,7 +4,7 @@ using SoulArenasAPI.Services;
 using SoulArenasAPI.Util;
 
 namespace SoulArenasAPI.Models.Auth;
- 
+
 public class AuthMiddlewareHandler
 {
     public static async Task OnTokenValidated(TokenValidatedContext context)
@@ -18,7 +18,7 @@ public class AuthMiddlewareHandler
         }
 
         var userService = context.HttpContext.RequestServices.GetRequiredService<UserService>();
-        
+
         var userEntity = await userService.GetUserById(int.Parse(userId));
         if (userEntity == null)
         {

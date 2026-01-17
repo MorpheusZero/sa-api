@@ -14,7 +14,7 @@ public static class JWTHelper
     {
         var handler = new JsonWebTokenHandler();
         var key = Encoding.UTF8.GetBytes(secretKey);
-        
+
         var descriptor = new SecurityTokenDescriptor
         {
             Issuer = Issuer,
@@ -25,7 +25,7 @@ public static class JWTHelper
             }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key), 
+                new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
         };
 

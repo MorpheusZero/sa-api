@@ -1,7 +1,5 @@
 namespace SoulArenasAPI.Controllers;
 
-using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens;
 using SoulArenasAPI.Models.DTOs;
 using SoulArenasAPI.Services;
 using SoulArenasAPI.Util;
@@ -14,12 +12,12 @@ public static class AuthController
         {
             try
             {
-            if (string.IsNullOrWhiteSpace(userCreateRequest.Email) || string.IsNullOrWhiteSpace(userCreateRequest.Password))
-            {
-                return Results.BadRequest("email and password are required fields.");
-            }
+                if (string.IsNullOrWhiteSpace(userCreateRequest.Email) || string.IsNullOrWhiteSpace(userCreateRequest.Password))
+                {
+                    return Results.BadRequest("email and password are required fields.");
+                }
 
-            return Results.Ok(await authService.RegisterNewUser(userCreateRequest));
+                return Results.Ok(await authService.RegisterNewUser(userCreateRequest));
             }
             catch (Exception ex)
             {
@@ -95,12 +93,12 @@ public static class AuthController
             {
                 return Results.BadRequest(ex.Message);
             }
-        }).AllowAnonymous();     
+        }).AllowAnonymous();
 
-        app.MapGet("/auth/token", (HttpContext context) => 
+        app.MapGet("/auth/token", (HttpContext context) =>
         {
             var authorizedUser = context.Items[Constants.AuthorizedUserContextString] as Database.Entities.UserEntity;
-            
+
             return Results.Ok(authorizedUser);
         })
         .RequireAuthorization();

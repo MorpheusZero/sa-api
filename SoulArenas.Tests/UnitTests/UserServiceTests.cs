@@ -16,9 +16,9 @@ public class UserServiceTests
         var mockDbContext = Substitute.For<ApplicationDbContext>(
             new DbContextOptionsBuilder<ApplicationDbContext>().Options);
         var mockDbSet = Substitute.For<DbSet<UserEntity>>();
-        
+
         mockDbContext.Users.Returns(mockDbSet);
-        
+
         var userService = new UserService(mockDbContext);
         var userCreateRequest = new UserCreateRequestDTO
         {
@@ -38,7 +38,7 @@ public class UserServiceTests
         Assert.False(result.IsDeleted);
         Assert.True(result.CreatedAt <= DateTime.UtcNow);
         Assert.True(result.LastModified <= DateTime.UtcNow);
-        
+
         mockDbSet.Received(1).Add(Arg.Any<UserEntity>());
         await mockDbContext.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
@@ -50,9 +50,9 @@ public class UserServiceTests
         var mockDbContext = Substitute.For<ApplicationDbContext>(
             new DbContextOptionsBuilder<ApplicationDbContext>().Options);
         var mockDbSet = Substitute.For<DbSet<UserEntity>>();
-        
+
         mockDbContext.Users.Returns(mockDbSet);
-        
+
         var userService = new UserService(mockDbContext);
         var userCreateRequest = new UserCreateRequestDTO
         {
@@ -74,9 +74,9 @@ public class UserServiceTests
         var mockDbContext = Substitute.For<ApplicationDbContext>(
             new DbContextOptionsBuilder<ApplicationDbContext>().Options);
         var mockDbSet = Substitute.For<DbSet<UserEntity>>();
-        
+
         mockDbContext.Users.Returns(mockDbSet);
-        
+
         var userService = new UserService(mockDbContext);
         var userCreateRequest = new UserCreateRequestDTO
         {

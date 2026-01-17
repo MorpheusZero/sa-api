@@ -1,5 +1,5 @@
 namespace SoulArenasAPI.Models.Auth;
- 
+
 public class AuthPolicyConstants
 {
     // Define policy names

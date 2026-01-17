@@ -1,5 +1,5 @@
 namespace SoulArenasAPI.Models.Auth;
- 
+
 public class PermissionsConstants
 {
     // SUPER_ADMIN gives access to everything--overrides anything else.

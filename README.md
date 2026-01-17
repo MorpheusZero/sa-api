@@ -52,3 +52,10 @@ ASPNETCORE_ENVIRONMENT=Development dotnet ef database update --project SoulArena
 ```bash
 dotnet run --project SoulArenasAPI/SoulArenasAPI.csproj
 ```
+
+## Format
+
+```
+dotnet format whitespace . --folder --include-generated
+dotnet format style ./SoulArenasAPI.csproj --no-restore
+```
