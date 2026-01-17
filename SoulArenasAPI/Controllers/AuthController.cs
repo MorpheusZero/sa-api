@@ -101,8 +101,8 @@ public static class AuthController
         {
             var authorizedUser = context.Items[Constants.AuthorizedUserContextString] as Database.Entities.UserEntity;
             
-            return Results.Ok(new { Message = $"Hello user {authorizedUser?.Username}, this is private data." });
+            return Results.Ok(authorizedUser);
         })
-        .RequireAuthorization(); // Requires a valid JWT   
+        .RequireAuthorization();
     }
 }
