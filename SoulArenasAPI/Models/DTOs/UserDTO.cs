@@ -21,7 +21,7 @@ public class UserDTO
     public string Email { get; set; } = string.Empty;
     public string Username { get; set; } = string.Empty;
 
-    public void fromEntity(UserEntity entity)
+    public UserDTO fromEntity(UserEntity entity)
     {
         Id = entity.Id;
         CreatedAt = entity.CreatedAt;
@@ -30,5 +30,6 @@ public class UserDTO
         IsActive = entity.IsActive;
         Email = entity.Email;
         Username = entity.Username;
+        return this;
     }
 }

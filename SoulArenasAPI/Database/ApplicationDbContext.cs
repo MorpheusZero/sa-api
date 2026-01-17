@@ -10,5 +10,5 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<UserEntity> Users { get; set; } = null!;
+    public virtual DbSet<UserEntity> Users { get; set; } = null!;
 }

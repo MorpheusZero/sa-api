@@ -2,6 +2,7 @@ using SoulArenasAPI.Database;
 using SoulArenasAPI.Database.Entities;
 using SoulArenasAPI.Models.DTOs;
 using SoulArenasAPI.Util;
+using Microsoft.EntityFrameworkCore;
 
 namespace SoulArenasAPI.Services
 {
@@ -13,17 +14,29 @@ namespace SoulArenasAPI.Services
             _dbContext = dbContext;
         }
 
+        public async Task<UserEntity?> GetUserById(int userId)
+        {
+            return await _dbContext.Users.FindAsync(userId);
+        }
+
+        public async Task<UserEntity?> GetUserByEmail(string email)
+        {
+            return await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Email == email.ToLower());
+        }
+
         public async Task<UserEntity> CreateUser(UserCreateRequestDTO userCreateRequest)
         {
             var userEntity = new UserEntity
             {
-                Email = userCreateRequest.Email,
+                Email = userCreateRequest.Email.ToLower(),
                 Username = UsernameGenerator.GenerateUsername(),
                 PasswordHash = await CryptoHelper.HashPasswordAsync(userCreateRequest.Password),
                 CreatedAt = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow,
                 IsActive = true,
-                IsDeleted = false
+                IsDeleted = false,
+                IsEmailVerified = false
             };
 
             _dbContext.Users.Add(userEntity);

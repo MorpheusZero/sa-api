@@ -8,7 +8,7 @@ namespace SoulArenasAPI.Controllers
         public static void MapRoutes(this WebApplication app)
         {
             app.MapGet("/health", (HealthService healthService) => 
-                Results.Ok(healthService.GetHealthStatus()));
+                Results.Ok(healthService.GetHealthStatus())).AllowAnonymous();
         }
     }
 }

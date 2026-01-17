@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -19,4 +20,8 @@ public class UserEntity : AppBaseEntity
     [Required]
     [MaxLength(16)]
     public string Username { get; set; } = string.Empty;
+
+    [Required]
+    [DefaultValue(false)]
+    public bool IsEmailVerified { get; set; } = false;
 }
