@@ -69,7 +69,7 @@ public static class AuthController
 
                 var user = await authService.LoginUser(userLoginRequest);
 
-                var cookieOptions = new CookieOptions
+                var accessTokenCookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
                     SameSite = SameSiteMode.Lax,
@@ -81,8 +81,101 @@ public static class AuthController
 
                 var accessToken = JWTHelper.GenerateAccessTokenForUser(configuration.GetValue<string>("JWTSecretKey")!, user.Id.ToString());
 
-                context.Response.Cookies.Append("x-access-token", accessToken, cookieOptions);
+                context.Response.Cookies.Append("x-access-token", accessToken, accessTokenCookieOptions);
 
+                var refreshToken = await authService.GenerateRefreshTokenForUser(
+                    user.Id,
+                    StringHelper.GetDeviceInfoFromUserAgent(context.Request.Headers["User-Agent"].ToString() ?? "unknown"),
+                    context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    context.Request.Headers["User-Agent"].ToString() ?? "unknown"
+                );
+
+                var refreshTokenCookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Lax,
+                    Secure = false,
+                    MaxAge = TimeSpan.FromDays(7),
+                    Domain = "localhost",
+                    Path = "/auth/refresh"
+                };
+
+                context.Response.Cookies.Append("x-refresh-token", refreshToken, refreshTokenCookieOptions);
+
+                return Results.Ok();
+            }
+            catch (FormatException)
+            {
+                return Results.BadRequest("Invalid authorization header format.");
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        }).AllowAnonymous();
+
+        app.MapPost("/auth/refresh", static async (HttpContext context, IConfiguration configuration, AuthService authService) =>
+        {
+            try
+            {
+                // Get refresh token from cookies
+                if (!context.Request.Cookies.TryGetValue("x-refresh-token", out var refreshToken))
+                {
+                    return Results.Unauthorized();
+                }
+
+                if (string.IsNullOrWhiteSpace(refreshToken))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var parts = refreshToken.Split('.', 2);
+                if (parts.Length != 2)
+                {
+                    return Results.Unauthorized();
+                }
+
+                var refreshTokenId = int.Parse(parts[0]);
+                var refreshTokenString = parts[1];
+
+                var user = await authService.ValidateRefreshToken(refreshTokenId, refreshTokenString);
+                if (user == null)
+                {
+                    return Results.Unauthorized();
+                }
+
+                var newAccessToken = JWTHelper.GenerateAccessTokenForUser(configuration.GetValue<string>("JWTSecretKey")!, user.Id.ToString());
+
+                var accessTokenCookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Lax,
+                    Secure = false,
+                    MaxAge = TimeSpan.FromMinutes(15),
+                    Domain = "localhost",
+                    Path = "/"
+                };
+
+                context.Response.Cookies.Append("x-access-token", newAccessToken, accessTokenCookieOptions);
+
+                var newRefreshToken = await authService.GenerateRefreshTokenForUser(
+                    user.Id,
+                    StringHelper.GetDeviceInfoFromUserAgent(context.Request.Headers["User-Agent"].ToString() ?? "unknown"),
+                    context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    context.Request.Headers["User-Agent"].ToString() ?? "unknown"
+                );
+
+                var refreshTokenCookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Lax,
+                    Secure = false,
+                    MaxAge = TimeSpan.FromDays(7),
+                    Domain = "localhost",
+                    Path = "/auth/refresh"
+                };
+
+                context.Response.Cookies.Append("x-refresh-token", newRefreshToken, refreshTokenCookieOptions);
                 return Results.Ok();
             }
             catch (FormatException)

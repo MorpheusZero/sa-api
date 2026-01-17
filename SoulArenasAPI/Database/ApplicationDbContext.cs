@@ -11,4 +11,6 @@ public class ApplicationDbContext : DbContext
     }
 
     public virtual DbSet<UserEntity> Users { get; set; } = null!;
+
+    public virtual DbSet<RefreshTokenEntity> RefreshTokens { get; set; } = null!;
 }

@@ -1,10 +1,12 @@
-namespace SoulArenasAPI.Services
+namespace SoulArenasAPI.Services;
+
+using SoulArenasAPI.Util;
+
+public class HealthService
 {
-    public class HealthService
+    public string GetHealthStatus()
     {
-        public string GetHealthStatus()
-        {
-            return "ok";
-        }
+        return "ok";
     }
 }
+

@@ -64,6 +64,7 @@ builder.Services.AddSingleton<HealthService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<AuthService>();
 builder.Services.AddSingleton<RBACService>();
+builder.Services.AddSingleton<RefreshTokenService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
