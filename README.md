@@ -59,3 +59,9 @@ dotnet run --project SoulArenasAPI/SoulArenasAPI.csproj
 dotnet format whitespace . --folder --include-generated
 dotnet format style ./SoulArenasAPI.csproj --no-restore
 ```
+
+## Testing
+
+```
+dotnet test SoulArenas.Tests/SoulArenas.Tests.csproj
+```
